@@ -1,0 +1,54 @@
+- id: ding_front_doorbell
+  alias: Ding Front Doorbell
+  trigger:
+  - entity_id: binary_sensor.ring_front_door_ding
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: media_player.lulus_home_mini_speaker
+      volume_level: '0.6'
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.lulus_home_mini_speaker
+      media_content_id: !secret doorbell_tune
+      media_content_type: audio/mp3
+    service: media_player.play_media
+- id: lulu_arriving_home
+  alias: Lulu arriving home
+  initial_state: True
+  trigger:
+  - entity_id: device_tracker.lulu
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data:
+      entity_id: media_player.lulus_home_mini_speaker
+      volume_level: '0.5'
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.lulus_home_mini_speaker
+      message: Lulu has arrived
+    service: tts.google_say
+- id: lulu_leaving_home
+  alias: Lulu leaving home
+  initial_state: True
+  trigger:
+  - entity_id: device_tracker.lulu
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - data:
+      entity_id: media_player.lulus_home_mini_speaker
+      volume_level: '0.5'
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.lulus_home_mini_speaker
+      message: Lulu has left
+    service: tts.google_say
