@@ -13,12 +13,11 @@
     service: media_player.volume_set
   - data:
       entity_id: media_player.lulus_home_mini_speaker
-      media_content_id: !secret doorbell_tune
+      media_content_id: https://dl.dropboxusercontent.com/s/tf344hbx9nlxc3e/doorbell-easy.mp3?dl=0
       media_content_type: audio/mp3
     service: media_player.play_media
 - id: lulu_arriving_home
   alias: Lulu arriving home
-  initial_state: True
   trigger:
   - entity_id: device_tracker.lulu
     from: not_home
@@ -32,16 +31,16 @@
     service: media_player.volume_set
   - data:
       entity_id: media_player.lulus_home_mini_speaker
-      message: Lulu has arrived
+      message: Welcome back Lulu
     service: tts.google_say
-- id: lulu_leaving_home
-  alias: Lulu leaving home
-  initial_state: True
+  initial_state: true
+- id: mama_arriving_home
+  alias: mama arriving home
   trigger:
-  - entity_id: device_tracker.lulu
-    from: home
+  - entity_id: device_tracker.mama
+    from: not_home
     platform: state
-    to: not_home
+    to: home
   condition: []
   action:
   - data:
@@ -50,5 +49,7 @@
     service: media_player.volume_set
   - data:
       entity_id: media_player.lulus_home_mini_speaker
-      message: Lulu has left
+      message: Welcome back Mama
     service: tts.google_say
+  initial_state: true
+  
