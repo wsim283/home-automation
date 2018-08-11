@@ -9,7 +9,7 @@
   action:
   - data:
       entity_id: media_player.lulus_home_mini_speaker
-      volume_level: '0.6'
+      volume_level: '0.7'
     service: media_player.volume_set
   - data:
       entity_id: media_player.lulus_home_mini_speaker
@@ -25,17 +25,12 @@
     to: home
   condition: []
   action:
+  - wait_template: '{{ is_state(''script.welcome_greetings'', ''off'') }}'
   - data:
-      entity_id: media_player.lulus_home_mini_speaker
-      volume_level: '0.5'
-    service: media_player.volume_set
-  - data:
-      entity_id: media_player.lulus_home_mini_speaker
-      message: Welcome home Lulu
-    service: tts.google_say
-  initial_state: true
+      entity_id: input_boolean.lulu_arrived
+    service: input_boolean.turn_on
 - id: mama_arriving_home
-  alias: mama arriving home
+  alias: Mama arriving home
   trigger:
   - entity_id: device_tracker.mama
     from: not_home
@@ -43,17 +38,12 @@
     to: home
   condition: []
   action:
+  - wait_template: '{{ is_state(''script.welcome_greetings'', ''off'') }}'
   - data:
-      entity_id: media_player.lulus_home_mini_speaker
-      volume_level: '0.5'
-    service: media_player.volume_set
-  - data:
-      entity_id: media_player.lulus_home_mini_speaker
-      message: Welcome home Mama
-    service: tts.google_say
-  initial_state: true
+      entity_id: input_boolean.mama_arrived
+    service: input_boolean.turn_on
 - id: papa_arriving_home
-  alias: papa arriving home
+  alias: Papa arriving home
   trigger:
   - entity_id: device_tracker.papa
     from: not_home
@@ -61,13 +51,44 @@
     to: home
   condition: []
   action:
+  - wait_template: '{{ is_state(''script.welcome_greetings'', ''off'') }}'
   - data:
-      entity_id: media_player.lulus_home_mini_speaker
-      volume_level: '0.5'
-    service: media_player.volume_set
+      entity_id: input_boolean.papa_arrived
+    service: input_boolean.turn_on
+- id: yiyi_arriving_home
+  alias: Yiyi arriving home
+  trigger:
+  - entity_id: device_tracker.yiyi
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - wait_template: '{{ is_state(''script.welcome_greetings'', ''off'') }}'
   - data:
-      entity_id: media_player.lulus_home_mini_speaker
-      message: Welcome home Papa
-    service: tts.google_say
-  initial_state: true
-  
+      entity_id: input_boolean.yiyi_arrived
+    service: input_boolean.turn_on
+- id: welcome_home_greeting
+  alias: Welcome Home greeting
+  trigger:
+  - entity_id: input_boolean.lulu_arrived
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: input_boolean.mama_arrived
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: input_boolean.papa_arrived
+    from: 'off'
+    platform: state
+    to: 'on'
+  - entity_id: input_boolean.yiyi_arrived
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: script.welcome_greetings
+    service: script.turn_on

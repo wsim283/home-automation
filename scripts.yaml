@@ -1,0 +1,100 @@
+#################################################################
+## Scripts
+#################################################################
+  welcome_greetings:
+    alias: 'Welcome Greetings'
+    sequence:
+      - service: media_player.volume_set
+        data:
+          entity_id: media_player.lulus_home_mini_speaker
+          volume_level: 0.6
+      - service: script.turn_on
+        entity_id: script.welcome_greeting_lulu
+      - delay: '00:00:02'
+      - service: script.turn_on
+        entity_id: script.welcome_greeting_mama
+      - delay: '00:00:02'
+      - service: script.turn_on
+        entity_id: script.welcome_greeting_papa
+      - delay: '00:00:02'
+      - service: script.turn_on
+        entity_id: script.welcome_greeting_yiyi
+      - delay: '00:00:02'
+
+  welcome_greeting_lulu:
+    alias: 'Welcome Lulu'
+    sequence:
+      - condition: state
+        entity_id: input_boolean.lulu_arrived
+        state: 'on'
+      - service: script.turn_on
+        entity_id: script.message_greeting
+      - service: script.turn_on
+        entity_id: script.turn_off_arrived_boolean
+
+  welcome_greeting_mama:
+    alias: 'Welcome Mama'
+    sequence:
+      - condition: state
+        entity_id: input_boolean.mama_arrived
+        state: 'on'
+      - service: script.turn_on
+        entity_id: script.message_greeting
+      - service: script.turn_on
+        entity_id: script.turn_off_arrived_boolean
+        
+  welcome_greeting_papa:
+    alias: 'Welcome Papa'
+    sequence:
+      - condition: state
+        entity_id: input_boolean.papa_arrived
+        state: 'on'
+      - service: script.turn_on
+        entity_id: script.message_greeting
+      - service: script.turn_on
+        entity_id: script.turn_off_arrived_boolean
+        
+  welcome_greeting_yiyi:
+    alias: 'Welcome Yiyi'
+    sequence:
+      - condition: state
+        entity_id: input_boolean.yiyi_arrived
+        state: 'on'
+      - service: script.turn_on
+        entity_id: script.message_greeting
+      - service: script.turn_on
+        entity_id: script.turn_off_arrived_boolean
+        
+  message_greeting:
+    alias: 'Message Greeting'
+    sequence: 
+      - service: tts.google_say
+        data_template:
+          entity_id: media_player.lulus_home_mini_speaker
+          message: >
+            {% if is_state('input_boolean.lulu_arrived', 'on') %}
+               Welcome home Lulu
+            {%-elif is_state('input_boolean.mama_arrived', 'on') %}
+               Welcome home Mama
+            {%-elif is_state('input_boolean.papa_arrived', 'on') %}
+               Welcome home Papa
+            {%-elif is_state('input_boolean.yiyi_arrived', 'on') %}
+               Welcome home ye ye
+            {% endif %}
+
+  turn_off_arrived_boolean:
+    alias: 'Turn off Arrived Boolean'
+    sequence: 
+      - service: input_boolean.turn_off
+        data_template:
+          entity_id: >
+            {% if is_state('input_boolean.lulu_arrived', 'on') %}
+               input_boolean.lulu_arrived
+            {%-elif is_state('input_boolean.mama_arrived', 'on') %}
+               input_boolean.mama_arrived
+            {%-elif is_state('input_boolean.papa_arrived', 'on') %}
+               input_boolean.papa_arrived
+            {%-elif is_state('input_boolean.yiyi_arrived', 'on') %}
+               input_boolean.yiyi_arrived
+            {% endif %}
+       
