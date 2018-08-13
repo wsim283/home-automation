@@ -14,3 +14,12 @@
   yiyi_arrived:
     name: Yiyi Arrived
     initial: off
+  lyang_arrived:
+    name: Lyang Arrived
+    initial: off
+  nini_arrived:
+    name: nini Arrived
+    initial: off
+  test_arrived:
+    name: test Arrived
+    initial: off
