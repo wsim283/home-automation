@@ -93,4 +93,3 @@ device_tracker:
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
-input_boolean: !include input_boolean.yaml

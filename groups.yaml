@@ -1,0 +1,6 @@
+  ##Not sure why id didn't get updated
+  ##For future reference: lulus_home_mini_speaker is Living Room speaker
+  ##While googlehome8504 is Lulu's Bedroom Speaker
+  speakers:
+    - media_player.lulus_home_mini_speaker
+    - media_player.googlehome8504
